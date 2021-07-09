@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Home extends CI_Controller
+class Auth extends CI_Controller
 {
 
     /**
@@ -19,12 +19,14 @@ class Home extends CI_Controller
      * map to /index.php/welcome/<method_name>
      * @see https://codeigniter.com/user_guide/general/urls.html
      */
-    public function index()
+    public function login()
     {
-        $this->load->model('Infokost_model');
-
-        $data['title'] = 'Welcome To InfoKost';
-        $data['infokost'] = $this->Infokost_model->getAll();
-        $this->load->view('home/index', $data);
+        $data['title'] = 'Login Page';
+        $this->load->view('auth/login', $data);
+    }
+    public function registration()
+    {
+        $data['title'] = 'Registration Page';
+        $this->load->view('auth/registration', $data);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Home extends CI_Controller
+class Admin extends CI_Controller
 {
 
     /**
@@ -21,10 +21,7 @@ class Home extends CI_Controller
      */
     public function index()
     {
-        $this->load->model('Infokost_model');
-
-        $data['title'] = 'Welcome To InfoKost';
-        $data['infokost'] = $this->Infokost_model->getAll();
-        $this->load->view('home/index', $data);
+        $data['title'] = 'Dashboard';
+        $this->load->view('admin/index', $data);
     }
 }
