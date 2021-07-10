@@ -23,8 +23,11 @@ class Home extends CI_Controller
     {
         $this->load->model('Infokost_model');
 
-        $data['title'] = 'Welcome To InfoKost';
+        $data['title'] = 'Welcome To InfoKost Romang Lompoa';
         $data['infokost'] = $this->Infokost_model->getAll();
+
+        $this->load->view('templates/header', $data);
         $this->load->view('home/index', $data);
+        $this->load->view('templates/footer');
     }
 }
