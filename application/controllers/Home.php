@@ -30,4 +30,15 @@ class Home extends CI_Controller
         $this->load->view('home/index', $data);
         $this->load->view('templates/footer');
     }
+    public function detail($id)
+    {
+        $this->load->model('Infokost_model');
+
+        $data['title'] = 'Detail Kost';
+        $data['detailkost'] = $this->Infokost_model->getById($id);
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/detail', $data);
+        $this->load->view('templates/footer');
+    }
 }

@@ -1,22 +1,3 @@
-<!-- Modal -->
-<div class="modal" id="modal">
-    <div class="modal_contain">
-        <img src="<?= base_url('assets') ?>/img/dummy.png" alt="Gambar Kos">
-        <br><br>
-        <h2><b>Boarding House </b></h2>
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laboriosam autem accusamus
-            esse officiis similique eum deserunt modi, amet suscipit saepe molestias natus quae dolor
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laboriosam autem accusamus
-            esse officiis similique eum deserunt modi, amet suscipit saepe molestias natus quae dolor
-        </p>
-        <ul>
-            <li><b>Alamat :</b> <a href="#">Jl. STPP, Romang Lompoa</a></li>
-            <li><b>No. Telpon :</b> <a href="tel:911">911</a></li>
-        </ul>
-        <button name="close" id="close">Close</button>
-    </div>
-</div>
-
 <!-- Login -->
 <div class="login" id="login">
     <div class="login_isi">
@@ -55,7 +36,7 @@
                 <div class="card_text">
                     <h3><b><?= $kost['name']; ?></b></h3>
                     <p><?= $kost['description']; ?></p>
-                    <button type="submit" id="more" name="more">More...</button>
+                    <a href="<?= base_url(); ?>home/detail/<?= $kost['id']; ?>">Detail</a>
                 </div>
             </div>
         <?php endforeach; ?>
