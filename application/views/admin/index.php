@@ -24,6 +24,7 @@
                             <th>Address</th>
                             <th>Price</th>
                             <th>Longitute, Latitute</th>
+                            <th>Image</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -39,6 +40,17 @@
                                 <td>Rp.<?= $kost['price']; ?></td>
                                 <td><?= $kost['longlat']; ?></td>
                                 <td>
+                                    <?php foreach ($images as $image) : ?>
+                                        <?php if ($image['id_kost'] == $kost['id']) : ?>
+                                            <?php if ($image['main_image'] == 1) : ?>
+                                                <img src="<?= base_url() ?>assets/uploads/<?= $image['image_name']; ?>" width="100px" alt="">
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                </td>
+
+                                <td>
+                                    <a href="<?= base_url('') ?>admin/upload_image/<?= $kost['id']; ?>" class="badge badge-dark">add img</a>
                                     <a href="" class="badge badge-danger">delete</a>
                                     <a href="" class="badge badge-success">edit</a>
                                     <a href="" class="badge badge-primary">detail</a>

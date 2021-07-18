@@ -26,18 +26,38 @@ class Admin extends CI_Controller
     }
     public function index()
     {
+        /* 
+        method index menampilkan semua data kost dengan semua gambarnya...
+        */
         $data['title'] = 'Dashboard';
 
         $data['kosts'] = $this->Infokost_model->getAll();
+        $data['joins'] = $this->Infokost_model->innerJoin();
+        $data['images'] = $this->Infokost_model->getAllImage();
         $this->load->view('templates/admin/header', $data);
         $this->load->view('templates/admin/sidebar');
         $this->load->view('templates/admin/topbar');
         $this->load->view('admin/index', $data);
         $this->load->view('templates/admin/footer');
+
+        /* 
+        Penjelasan mengenai file index
+
+        1. melakukan foreach data kosts untuk menambilkan semua data kost pada tabel
+        2. kemudian melakukan perulangan(foreach) pada tag img untuk melooping semua gambar pada satu tempat kolom. karena jika tidak melakukan looping pada img maka data kostnya akan menduplikat sesuai jumlah fotonya. 
+        3. kemudian diberikan kondisi apakah field id_kost pada tabel image sama dengan field id pada tabel kost. hal ini dilakukan agar gambar yang di tampilakn sesuai dengan kostnya secara spesifik
+        4. kumudian diberikan lagi kondisi apakah main_kost == 1. hal ini di lakukan agar menampilkan 1 foto saja pada tabel yaitu yang merupakan main image
+        */
     }
     public function create()
     {
+        /* 
+        
+        method create ini berfungsi menampilkan form tambah data kost sekaligus melakukan proses upload data ke database
+        
+        */
         $data['title'] = 'Create New Data';
+
 
         $this->form_validation->set_rules('name', 'Name', 'trim|required');
         $this->form_validation->set_rules('contact', 'Contact', 'trim|required|numeric');
@@ -66,5 +86,77 @@ class Admin extends CI_Controller
             $this->Infokost_model->store($data);
             redirect('admin');
         }
+    }
+    public function upload_image($id)
+    {
+        /* 
+        method upload image ini berfungsi menampilkan form tambah gambar dengan mengambil id dari salah satu data kost yang nantinya digunakan untuk menambahkan gambar spesifik untuk data kost tersebut
+        */
+        $data['title'] = 'Add New Image';
+
+        $data['id_kost'] = $id;
+
+
+
+        $this->load->view('templates/admin/header', $data);
+        $this->load->view('templates/admin/sidebar');
+        $this->load->view('templates/admin/topbar');
+        $this->load->view('admin/upload_image', $data);
+        $this->load->view('templates/admin/footer');
+    }
+    public function do_upload()
+    {
+        // $this->form_validation->set_rules('id_kost', 'id_kost', 'required');
+        // $this->form_validation->set_rules('level', 'Level', 'required');
+        // $this->form_validation->set_rules('userfile', 'Userfile', 'required');
+
+        /* 
+        method do_upload ini melakukan proses upload gambar ke database 
+        */
+
+        /* 
+        
+        1. baris di bawah ini merupakan config yang digunakan untuk proses upload file....
+        2. Ingat path yang digunakan harus di ubah permissionnya jadi excutable
+        3. library('upload') merupakan ketentuan dari CI
+        4. library kemudian digunakan seperti => $this->upload->do_upload('userfile);
+        5. 'userfile' itu berasal dari name pada form inputan
+        6. (penjelasan if else) kondisi pertama apabaila proses pilih gambar(jadi apakah ada gambar yang di pilih atau tidak) $this->upload->do_upload('userfile) gagal atau bernilai false maka akan di tampilkan error. tapi sebenarnya error tersebut belum fix. nah trik yang saya gunakan untuk mencegah kondisi tersebut adalah dengan memberikan required pada form input. sehingga form tidak akan berfungsi jika inputannya kosong.
+        7. (penjelasan if else) ketika ada foto yang di select maka akan di lakukan upload->data(). data() ini merupakan ketentuan dari CI. lalu kumudian di simpan ke dalam variabel image. karena mungkin berntuk data dari variabel image tersebut adalah array. maka untuk mengambil nama file di gunakan $image['file_name'] kemudian di simpan ke dalam variabel. nnatinya untuk di simpan ke database.
+        8. menyiapkan data yang bersisi id_kost dari inputan dgn name id_kost, main_image dari inpuutan dgn main level dan image_name dari variabel $image
+        9. lalu kemudian memanggil model method upload_image dengan mengirimkan data
+        10. pada model tersebut dilakukan insert data ke database tabel image
+        11. lalu dilakukan redirect ke halaman admin(index)
+        .
+        */
+        $config['upload_path']          = './assets/uploads/';
+        $config['allowed_types']        = 'jpeg|jpg|png';
+        $config['max_size']             = 10000;
+
+        $this->load->library('upload', $config);
+
+
+
+        // if ($this->form_validation->run() == false) {
+        //     // redirect('admin/upload_image/' . $this->input->post('id_kost'));
+        //     echo 'gagal';
+        // } else {
+        if (!$this->upload->do_upload('userfile')) {
+            $error = array('error' => $this->upload->display_errors());
+
+            $this->load->view('admin/upload_image', $error);
+        } else {
+            $image = $this->upload->data();
+            $image = $image['file_name'];
+            $data = [
+                'id_kost' => $this->input->post('id_kost'),
+                'main_image' => $this->input->post('level'),
+                'image_name' => $image
+            ];
+
+            $this->Infokost_model->upload_image($data);
+            redirect('admin');
+        }
+        // }
     }
 }

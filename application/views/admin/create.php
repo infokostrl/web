@@ -35,7 +35,7 @@
                     <input type="text" class="form-control" id="link" name="link" placeholder="Link">
                 </div>
                 <a href="<?= base_url('admin'); ?>" class="btn btn-danger">Cancel</a>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary" name="submit ">Create</button>
             </form>
         </div>
     </div>
