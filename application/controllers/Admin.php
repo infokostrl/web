@@ -74,16 +74,18 @@ class Admin extends CI_Controller
             $this->load->view('admin/create');
             $this->load->view('templates/admin/footer');
         } else {
+            /* sebenarnya data ini bisa di siapkan di dalam model  */
             $data = [
-                'name' => $this->input->post('name'),
-                'contact' => $this->input->post('contact'),
-                'address' => $this->input->post('address'),
-                'price' => $this->input->post('price'),
-                'description' => $this->input->post('description'),
-                'longlat' => $this->input->post('longlat'),
-                'link' => $this->input->post('link')
+                'name' => $this->input->post('name', true),
+                'contact' => $this->input->post('contact', true),
+                'address' => $this->input->post('address', true),
+                'price' => $this->input->post('price', true),
+                'description' => $this->input->post('description', true),
+                'longlat' => $this->input->post('longlat', true),
+                'link' => $this->input->post('link', true)
             ];
             $this->Infokost_model->store($data);
+            $this->session->set_flashdata('flash', 'Di Tambahkan');
             redirect('admin');
         }
     }
@@ -158,5 +160,60 @@ class Admin extends CI_Controller
             redirect('admin');
         }
         // }
+    }
+    public function update($id)
+    {
+        $data['title'] = 'Update Data';
+
+        $data['kost'] = $this->Infokost_model->getById($id);
+
+
+        $this->form_validation->set_rules('name', 'Name', 'trim|required');
+        $this->form_validation->set_rules('contact', 'Contact', 'trim|required|numeric');
+        $this->form_validation->set_rules('address', 'Address', 'trim|required');
+        $this->form_validation->set_rules('price', 'Price', 'trim|required');
+        $this->form_validation->set_rules('description', 'Desctription', 'trim|required');
+        $this->form_validation->set_rules('longlat', 'Lonlat', 'trim|required');
+        $this->form_validation->set_rules('link', 'Link', 'trim|required');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/admin/header', $data);
+            $this->load->view('templates/admin/sidebar');
+            $this->load->view('templates/admin/topbar');
+            $this->load->view('admin/update', $data);
+            $this->load->view('templates/admin/footer');
+        } else {
+            $data = [
+                'name' => $this->input->post('name', TRUE),
+                'contact' => $this->input->post('contact', true),
+                'address' => $this->input->post('address', true),
+                'price' => $this->input->post('price', true),
+                'description' => $this->input->post('description', true),
+                'longlat' => $this->input->post('longlat', true),
+                'link' => $this->input->post('link', true)
+            ];
+            $this->Infokost_model->update($data);
+            $this->session->set_flashdata('flash', 'Di Perbaharui');
+            redirect('admin');
+        }
+    }
+    public function detail($id)
+    {
+        $data['title'] = 'Detail Data';
+
+        $data['images'] = $this->Infokost_model->getImageByIdKost($id);
+        $data['kost'] = $this->Infokost_model->getById($id);
+        $this->load->view('templates/admin/header', $data);
+        $this->load->view('templates/admin/sidebar');
+        $this->load->view('templates/admin/topbar');
+        $this->load->view('admin/detail', $data);
+        $this->load->view('templates/admin/footer');
+    }
+    public function delete($id)
+    {
+        $this->Infokost_model->destroy($id);
+        $this->Infokost_model->destroyimg($id);
+        $this->session->set_flashdata('flash', 'Di Hapus');
+        redirect('admin');
     }
 }

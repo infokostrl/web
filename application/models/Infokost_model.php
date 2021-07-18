@@ -32,4 +32,24 @@ class Infokost_model extends CI_Model
     {
         return $this->db->get('image')->result_array();
     }
+    public function destroy($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('kost');
+    }
+    public function destroyimg($id)
+    {
+        $this->db->where('id_kost', $id);
+        return $this->db->delete('image');
+    }
+    public function getImageByIdKost($id)
+    {
+        $this->db->where('id_kost', $id);
+        return $this->db->get('image')->result_array();
+    }
+    public function update($data)
+    {
+        $this->db->where('id', $this->input->post('id'));
+        return $this->db->update('kost', $data);
+    }
 }
