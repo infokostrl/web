@@ -23,6 +23,11 @@ class Admin extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Infokost_model');
+
+        if ($this->session->userdata('email') == null) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Please Login!</div>');
+            redirect('auth/login');
+        }
     }
     public function index()
     {
