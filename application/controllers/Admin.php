@@ -31,12 +31,16 @@ class Admin extends CI_Controller
         */
         $data['title'] = 'Dashboard';
 
+        // untuk mengambil data pada database berdasarkan data yang ada di session(yang dikirim dari login)
+        $data['user'] = $this->db->get_where('admin', ['email' => $this->session->userdata('email')])->row_array();
+
+
         $data['kosts'] = $this->Infokost_model->getAll();
         $data['joins'] = $this->Infokost_model->innerJoin();
         $data['images'] = $this->Infokost_model->getAllImage();
         $this->load->view('templates/admin/header', $data);
         $this->load->view('templates/admin/sidebar');
-        $this->load->view('templates/admin/topbar');
+        $this->load->view('templates/admin/topbar', $data);
         $this->load->view('admin/index', $data);
         $this->load->view('templates/admin/footer');
 
