@@ -36,6 +36,8 @@ class Home extends CI_Controller
 
         $data['title'] = 'Detail Kost';
         $data['detailkost'] = $this->Infokost_model->getById($id);
+        $data['carousel'] = $this->Infokost_model->carouselMain($id);
+        $data['carouselAll'] = $this->Infokost_model->carouselAll($id);
 
         $this->load->view('templates/header', $data);
         $this->load->view('home/detail', $data);

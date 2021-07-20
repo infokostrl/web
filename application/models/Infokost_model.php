@@ -52,4 +52,19 @@ class Infokost_model extends CI_Model
         $this->db->where('id', $this->input->post('id'));
         return $this->db->update('kost', $data);
     }
+
+    // Carousel
+    public function carouselMain($id)
+    {
+        $arr = array('id_kost' => $id, 'main_image' => 1);
+        $this->db->where($arr);
+        return $this->db->get('image')->row_array();
+    }
+
+    public function carouselAll($id)
+    {
+        $arr = array('id_kost' => $id, 'main_image' => 0);
+        $this->db->where($arr);
+        return $this->db->get('image')->result_array();
+    }
 }
