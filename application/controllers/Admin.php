@@ -220,9 +220,18 @@ class Admin extends CI_Controller
     }
     public function delete($id)
     {
-        $this->Infokost_model->destroy($id);
-        $this->Infokost_model->destroyimg($id);
-        $this->session->set_flashdata('flash', 'Di Hapus');
-        redirect('admin');
+
+        $data = $this->Infokost_model->getImageByIdKost($id); // to get data image from table image by id off spesific kost
+        $path = './assets/uploads/' . $data['image_name']; //to get path off img berdasarkan nama yang ada di table image
+
+        // kondisi ini mencek file didalm folder dan sekaligus menghapusnya
+        if (is_readable($path) && unlink($path)) {
+            $this->Infokost_model->destroyimg($id);
+            $this->Infokost_model->destroy($id); //to delete data kost form table kost
+            $this->session->set_flashdata('flash', 'Di Hapus');
+            redirect('admin');
+        } else {
+            echo 'gagal';
+        }
     }
 }
