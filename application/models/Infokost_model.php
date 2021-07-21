@@ -61,6 +61,14 @@ class Infokost_model extends CI_Model
         return $this->db->get('image')->result_array();
     }
 
+    // function yang di gunakan pada tombol delete
+    public function deleteImageByIdKost($id)
+    {
+        $this->db->where('id_kost', $id);
+        return $this->db->get('image')->row_array();
+    }
+
+
     // function to update data kost
     public function update($data)
     {

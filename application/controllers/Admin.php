@@ -219,7 +219,7 @@ class Admin extends CI_Controller
     public function delete($id)
     {
 
-        $data = $this->Infokost_model->getImageByIdKost($id); // to get data image from table image by id off spesific kost
+        $data = $this->Infokost_model->deleteImageByIdKost($id); // to get data image from table image by id off spesific kost
         $path = './assets/uploads/' . $data['image_name']; //to get path off img berdasarkan nama yang ada di table image
 
         // kondisi ini mencek file didalm folder dan sekaligus menghapusnya
