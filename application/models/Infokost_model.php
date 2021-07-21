@@ -58,7 +58,7 @@ class Infokost_model extends CI_Model
     public function getImageByIdKost($id)
     {
         $this->db->where('id_kost', $id);
-        return $this->db->get('image')->row_array();
+        return $this->db->get('image')->result_array();
     }
 
     // function to update data kost
