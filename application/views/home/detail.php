@@ -62,8 +62,8 @@
         <div id="mapid"></div>
         <script>
         // Input long and lat
-        var mymap = L.map('mapid').setView([-5.226498506297373, 119.50288189865357], 13);
-        var marker = L.marker([-5.226498506297373, 119.50288189865357]).addTo(mymap);
+        var mymap = L.map('mapid').setView([<?= $detailkost['longlat'] ?>], 13);
+        var marker = L.marker([<?= $detailkost['longlat'] ?>]).addTo(mymap);
         // Leaflet Config
         L.tileLayer(
             'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGFuZHlnYXJkYSIsImEiOiJja3I2NDBkcXIwbWh5MzByMmltanRxb3p3In0.i8Vfq-6kCydHDLnOo32JgA', {
@@ -76,7 +76,7 @@
             }).addTo(mymap);
 
         // Pop up marker
-        marker.bindPopup('<a href="https://goo.gl/maps/54kMkUHbggwPDQu47" target="_blank"><b>Kost Ernias</b></a>')
+        marker.bindPopup('<a href="<?= $detailkost['link'] ?>" target="_blank"><b><?= $detailkost['name'] ?></b></a>')
             .openPopup();
         </script>
         <!-- End Leaflet OpenStreetMap -->

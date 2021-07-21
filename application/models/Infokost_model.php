@@ -25,14 +25,17 @@ class Infokost_model extends CI_Model
         $this->db->insert('image', $data);
     }
 
-    // function to get all relation off 2 table
+    // function to get all relation off 2 table (kost & image)
     public function innerJoin()
     {
+        $arr = array('main_image' => 0);
+
         $this->db->select('
             kost.*, image.image_name
         ');
         $this->db->from('kost');
-        $this->db->join('image', 'kost.id=image.id_kost', 'left outer');
+        $this->db->join('image', 'kost.id=image.id_kost', 'inner');
+        $this->db->where($arr);
         $this->db->order_by('kost.id');
         return $this->db->get()->result_array();
     }
@@ -84,5 +87,13 @@ class Infokost_model extends CI_Model
         $arr = array('id_kost' => $id, 'main_image' => 0);
         $this->db->where($arr);
         return $this->db->get('image')->result_array();
+    }
+
+    // Function Long lat
+    public function longLat()
+    {
+        $this->db->select('id, name, longlat, link');
+        $this->db->from('kost');
+        return $this->db->get()->result_array();
     }
 }

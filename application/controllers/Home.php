@@ -25,6 +25,8 @@ class Home extends CI_Controller
 
         $data['title'] = 'Welcome To InfoKost Romang Lompoa';
         $data['infokost'] = $this->Infokost_model->getAll();
+        $data['flatlist'] = $this->Infokost_model->innerJoin();
+        $data['longlat'] = $this->Infokost_model->longLat();
 
         $this->load->view('templates/header', $data);
         $this->load->view('home/index', $data);

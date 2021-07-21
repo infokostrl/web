@@ -21,12 +21,11 @@
         <div id="mapid"></div>
         <script>
         // Long dan Lat pertengahan Romang Lompoa
-        var mymap = L.map('mapid').setView([-5.223756088080829, 119.50632867393728], 13);
-
-        // Marker Kost Ernias
-        var ernias1 = L.marker([-5.226498506297373, 119.50288189865357]).addTo(mymap);
-        // Marker Kost Namira
-        var namira = L.marker([-5.225532495562082, 119.50505401029527]).addTo(mymap);
+        var mymap = L.map('mapid').setView([-5.223756088080829, 119.50632867393728], 15);
+        <?php foreach ($longlat as $map) : ?>
+        var kost<?= $map['id'] ?> = L.marker([<?= $map['longlat'] ?>]).addTo(mymap);
+        kost<?= $map['id'] ?>.bindPopup('<a href="<?= $map['link'] ?>" target="_blank"><b><?= $map['name'] ?></b></a>');
+        <?php endforeach; ?>
 
         // Leaflet Config
         L.tileLayer(
@@ -38,10 +37,6 @@
                 zoomOffset: -1,
                 accessToken: 'pk.eyJ1IjoiZGFuZHlnYXJkYSIsImEiOiJja3I2NDBkcXIwbWh5MzByMmltanRxb3p3In0.i8Vfq-6kCydHDLnOo32JgA'
             }).addTo(mymap);
-
-        // Pop up marker
-        ernias1.bindPopup('<a href="https://goo.gl/maps/54kMkUHbggwPDQu47" target="_blank"><b>Kost Ernias</b></a>');
-        namira.bindPopup('<a href="https://goo.gl/maps/JXYm52d6zLkCrQB27" target="_blank"><b>Kost Namira</b></a>');
         </script>
         <!-- End of Leaflet OpenStreetMap -->
     </div>
@@ -55,14 +50,15 @@
 
     <div class="container">
         <div class="container_card">
-            <?php foreach ($infokost as $kost) : ?>
+            <!-- Add shrink text later so the card has a consistent width & height, which is cool UwU -->
+            <?php foreach ($flatlist as $flat) : ?>
             <!-- Card start here -->
             <div class="card_custom">
-                <img src="<?= base_url('assets') ?>/img/dummy.png">
+                <img src="<?= base_url('assets') ?>/uploads/<?= $flat['image_name'] ?>">
                 <div class="card_text">
-                    <h3><b><?= $kost['name']; ?></b></h3>
-                    <p><?= $kost['description']; ?></p>
-                    <a href="<?= base_url(); ?>home/detail/<?= $kost['id']; ?>#info">Detail</a>
+                    <h3><b><?= $flat['name']; ?></b></h3>
+                    <p><?= $flat['description']; ?></p>
+                    <a href="<?= base_url(); ?>home/detail/<?= $flat['id']; ?>#info">Detail</a>
                 </div>
             </div>
             <!-- End card -->
