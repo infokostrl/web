@@ -40,8 +40,7 @@ class Admin extends CI_Controller
         $data['user'] = $this->db->get_where('admin', ['email' => $this->session->userdata('email')])->row_array();
 
 
-        $data['kosts'] = $this->Infokost_model->getAll();
-        $data['joins'] = $this->Infokost_model->innerJoin();
+        $data['kosts'] = $this->Infokost_model->getAllAdmin();
         $data['images'] = $this->Infokost_model->getAllImage();
         $this->load->view('templates/admin/header', $data);
         $this->load->view('templates/admin/sidebar');
@@ -107,8 +106,6 @@ class Admin extends CI_Controller
 
         $data['id_kost'] = $id;
 
-
-
         $this->load->view('templates/admin/header', $data);
         $this->load->view('templates/admin/sidebar');
         $this->load->view('templates/admin/topbar');
@@ -166,6 +163,7 @@ class Admin extends CI_Controller
             ];
 
             $this->Infokost_model->upload_image($data);
+            $this->session->set_flashdata('flash', 'Di Upload');
             redirect('admin');
         }
         // }

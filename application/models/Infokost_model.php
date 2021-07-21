@@ -2,10 +2,19 @@
 
 class Infokost_model extends CI_Model
 {
-    // get all data kost
-    public function getAll()
+    // get all data kost admin
+    public function getAllAdmin()
     {
         return $this->db->get('kost')->result_array();
+    }
+    // get all data kost user
+
+    public function getAllUser($limit, $start, $keyword = null)
+    {
+        if ($keyword) {
+            $this->db->like('name', $keyword);
+        }
+        return $this->db->get('kost', $limit, $start)->result_array();
     }
     // get kost by id   
     public function getById($id)
@@ -23,21 +32,6 @@ class Infokost_model extends CI_Model
     public function upload_image($data)
     {
         $this->db->insert('image', $data);
-    }
-
-    // function to get all relation off 2 table (kost & image)
-    public function innerJoin()
-    {
-        $arr = array('main_image' => 0);
-
-        $this->db->select('
-            kost.*, image.image_name
-        ');
-        $this->db->from('kost');
-        $this->db->join('image', 'kost.id=image.id_kost', 'inner');
-        $this->db->where($arr);
-        $this->db->order_by('kost.id');
-        return $this->db->get()->result_array();
     }
 
     // function to get all image from table image
@@ -72,28 +66,5 @@ class Infokost_model extends CI_Model
     {
         $this->db->where('id', $this->input->post('id'));
         return $this->db->update('kost', $data);
-    }
-
-    // Carousel
-    public function carouselMain($id)
-    {
-        $arr = array('id_kost' => $id, 'main_image' => 1);
-        $this->db->where($arr);
-        return $this->db->get('image')->row_array();
-    }
-
-    public function carouselAll($id)
-    {
-        $arr = array('id_kost' => $id, 'main_image' => 0);
-        $this->db->where($arr);
-        return $this->db->get('image')->result_array();
-    }
-
-    // Function Long lat
-    public function longLat()
-    {
-        $this->db->select('id, name, longlat, link');
-        $this->db->from('kost');
-        return $this->db->get()->result_array();
     }
 }

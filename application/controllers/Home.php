@@ -19,14 +19,41 @@ class Home extends CI_Controller
      * map to /index.php/welcome/<method_name>
      * @see https://codeigniter.com/user_guide/general/urls.html
      */
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('User_model');
+    }
     public function index()
     {
-        $this->load->model('Infokost_model');
+        $this->load->library('pagination');
+
+        if ($this->input->post('submit')) {
+            $data['keyword'] = $this->input->post('keyword');
+            $this->session->set_userdata('keyword', $data['keyword']);
+        } else {
+            $data['keyword'] = $this->session->userdata('keyword');
+        }
+
+        $config['base_url'] = 'http://localhost/web/home/index/';
+
+        $this->db->like('name', $data['keyword']);
+        $this->db->from('kost');
+        $config['total_rows'] = $this->db->count_all_results();
+        $config['per_page'] = 3;
+
+
+
+        $this->pagination->initialize($config);
+
+        $data['start'] = $this->uri->segment(3);
 
         $data['title'] = 'Welcome To InfoKost Romang Lompoa';
-        $data['infokost'] = $this->Infokost_model->getAll();
-        $data['flatlist'] = $this->Infokost_model->innerJoin();
-        $data['longlat'] = $this->Infokost_model->longLat();
+        // $data['infokost'] = $this->Infokost_model->getAllUser($config['per_page'], $data['start'], $data['keyword']);
+
+        $data['flatlist'] = $this->User_model->innerJoin($config['per_page'], $data['start'], $data['keyword']); //mengambil data hasil join 2 tabel berdasarkan main_kostnya dan limitnya
+        $data['longlat'] = $this->User_model->longLat();
 
         $this->load->view('templates/header', $data);
         $this->load->view('home/index', $data);
@@ -34,12 +61,12 @@ class Home extends CI_Controller
     }
     public function detail($id)
     {
-        $this->load->model('Infokost_model');
+
 
         $data['title'] = 'Detail Kost';
-        $data['detailkost'] = $this->Infokost_model->getById($id);
-        $data['carousel'] = $this->Infokost_model->carouselMain($id);
-        $data['carouselAll'] = $this->Infokost_model->carouselAll($id);
+        $data['detailkost'] = $this->User_model->getById($id);
+        $data['carousel'] = $this->User_model->carouselMain($id);
+        $data['carouselAll'] = $this->User_model->carouselAll($id);
 
         $this->load->view('templates/header', $data);
         $this->load->view('home/detail', $data);
