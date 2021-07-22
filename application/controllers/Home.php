@@ -36,7 +36,7 @@ class Home extends CI_Controller
             $data['keyword'] = $this->session->userdata('keyword');
         }
 
-        $config['base_url'] = 'http://localhost/web/home/index/';
+        $config['base_url'] = 'http://localhost/home/index/';
 
         $this->db->like('name', $data['keyword']);
         $this->db->from('kost');
