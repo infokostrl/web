@@ -12,7 +12,7 @@
     </div>
 
     <div class="footer_box_link fw-bold">
-        &copy; Info Kost, Inc. 2021
+        &copy; KKN GEL. 106 GOWA 7
     </div>
 </div>
 <!-- End Footer -->
